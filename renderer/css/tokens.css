@@ -1,0 +1,54 @@
+/* Design tokens. Every colour, size and font used by the UI comes from here. */
+
+@font-face { font-family: "Inter"; font-weight: 400; font-display: swap; src: url("../assets/fonts/Inter-Regular.woff") format("woff"); }
+@font-face { font-family: "Inter"; font-weight: 500; font-display: swap; src: url("../assets/fonts/Inter-Medium.woff") format("woff"); }
+@font-face { font-family: "Inter"; font-weight: 600; font-display: swap; src: url("../assets/fonts/Inter-SemiBold.woff") format("woff"); }
+@font-face { font-family: "Inter Display"; font-weight: 600; font-display: swap; src: url("../assets/fonts/InterDisplay-SemiBold.woff") format("woff"); }
+@font-face { font-family: "Inter Display"; font-weight: 700; font-display: swap; src: url("../assets/fonts/InterDisplay-Bold.woff") format("woff"); }
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces: a plum-tinted ink, lightest at the front */
+  --ink-0: #120e16;   /* window */
+  --ink-1: #181320;   /* sidebar, rail */
+  --ink-2: #1f192a;   /* cards */
+  --ink-3: #2a2238;   /* inputs, raised */
+  --ink-4: #362d47;   /* hover */
+  --line: #332a42;
+  --line-soft: #271f33;
+
+  /* Text */
+  --text: #f4eff9;
+  --muted: #aa9fba;
+  --faint: #776c88;
+
+  /* Brand: the paw-pad red from the mascot, and its pink tint */
+  --paw: #ee3355;
+  --paw-hover: #ff4d6d;
+  --paw-ink: #fff;
+  --paw-wash: rgba(238, 51, 85, .14);
+  --pink: #ff9db1;
+
+  /* Status */
+  --ok: #56d6a4;
+  --warn: #f5c05c;
+  --err: #ff7488;
+  --info: #9db4ff;
+
+  /* Type */
+  --font: "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Inter Display", "Inter", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, "DejaVu Sans Mono", monospace;
+
+  /* Shape and rhythm */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --gap: 16px;
+  --titlebar: 36px;
+  --sidebar: 236px;
+  --rail: 404px;
+
+  --ring: 0 0 0 2px var(--ink-0), 0 0 0 4px var(--pink);
+}

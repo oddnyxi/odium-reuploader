@@ -1,0 +1,42 @@
+/* Right rail: model preview and activity log. */
+
+.panel { grid-area: panel; display: flex; flex-direction: column; gap: var(--gap); min-height: 0; padding: 20px 20px 20px 4px; }
+.card { display: flex; flex-direction: column; border: 1px solid var(--line-soft); border-radius: var(--r-lg); background: var(--ink-2); }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px 10px; }
+.card-head h2 { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+
+/* ── Preview ── */
+.preview { flex: none; padding-bottom: 14px; }
+.stage {
+  position: relative; margin: 2px 14px 0; height: 330px; overflow: hidden;
+  border-radius: var(--r-md); border: 1px solid var(--line-soft);
+  /* a lit floor: spotlight above, faint grid underneath */
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%, rgba(255, 157, 177, .16), transparent 70%),
+    linear-gradient(var(--line-soft) 1px, transparent 1px) 0 0 / 28px 28px,
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px) 0 0 / 28px 28px,
+    var(--ink-1);
+  background-blend-mode: normal;
+}
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; touch-action: none; }
+.stage canvas:active { cursor: grabbing; }
+.stage-ph { position: absolute; inset: 0; display: grid; place-items: center; padding: 0 32px; text-align: center; color: var(--faint); pointer-events: none; }
+.stage-info { position: absolute; left: 10px; top: 10px; padding: 3px 10px; border-radius: 99px; background: rgba(18, 14, 22, .75); backdrop-filter: blur(6px); color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.stage-tools { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); display: flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 99px; background: rgba(24, 19, 32, .82); backdrop-filter: blur(8px); }
+.stage-tools .icon-btn { width: 30px; height: 30px; border-radius: 50%; }
+.thumb-view { margin: 2px 14px 0; height: 330px; display: grid; place-items: center; overflow: hidden; border-radius: var(--r-md); border: 1px dashed var(--ink-4); background: var(--ink-1); color: var(--faint); }
+.thumb-view img { width: 100%; height: 100%; object-fit: contain; }
+.hint { margin: 10px 16px 0; color: var(--faint); font-size: 12px; line-height: 1.45; }
+
+/* ── Activity log ── */
+.log-card { flex: 1; min-height: 0; }
+.log-tools { display: flex; align-items: center; gap: 8px; }
+.logbox { flex: 1; min-height: 0; margin: 0 14px 14px; padding: 10px 12px; overflow-y: auto; border-radius: var(--r-md); background: var(--ink-0); font: 12px/1.6 var(--font-mono); }
+.log { color: var(--muted); overflow-wrap: anywhere; }
+.log.debug { color: var(--faint); }
+.log.info { color: var(--info); }
+.log.success { color: var(--ok); }
+.log.warn { color: var(--warn); }
+.log.error { color: var(--err); }
+
+@media (max-height: 760px) { .stage, .thumb-view { height: 260px; } }

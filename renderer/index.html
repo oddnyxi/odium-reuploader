@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data:; font-src 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Odium Uploader</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/shell.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/workspace.css">
+  <link rel="stylesheet" href="css/avatars.css">
+  <link rel="stylesheet" href="css/panel.css">
+  <link rel="stylesheet" href="css/dialogs.css">
+</head>
+<body>
+  <!-- Icon sprite: <use href="#i-name"> -->
+  <svg class="sprite" width="0" height="0" aria-hidden="true">
+    <defs>
+      <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-box" viewBox="0 0 24 24"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3ZM4 7.5l8 4.5 8-4.5M12 12v9"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></symbol>
+      <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+      <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5ZM14 3v5h5"/></symbol>
+      <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-9 9"/></symbol>
+      <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5"/></symbol>
+      <symbol id="i-zoom-in" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></symbol>
+      <symbol id="i-zoom-out" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M8 11h6"/></symbol>
+      <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+      <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4 2.5 20h19L12 4ZM12 10v4.5M12 17.2v.1"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3Z"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.1"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="titlebar" id="titlebar">
+    <div class="tb-title">
+      <img src="assets/icon.png" alt="" width="16" height="16">
+      <span>Odium Uploader</span>
+    </div>
+    <div class="tb-ctl">
+      <button class="tb-btn" id="wMin" type="button" aria-label="Minimize"><svg viewBox="0 0 12 12"><path d="M2 6h8"/></svg></button>
+      <button class="tb-btn" id="wMax" type="button" aria-label="Maximize">
+        <svg class="ico-max" viewBox="0 0 12 12"><rect x="2" y="2" width="8" height="8" rx="1"/></svg>
+        <svg class="ico-rest" viewBox="0 0 12 12"><rect x="2" y="3.5" width="6.5" height="6.5" rx="1"/><path d="M4 3.5V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-.5"/></svg>
+      </button>
+      <button class="tb-btn close" id="wClose" type="button" aria-label="Close"><svg viewBox="0 0 12 12"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></button>
+    </div>
+  </header>
+
+  <!-- ───────── Sidebar ───────── -->
+  <aside class="side">
+    <div class="brand">
+      <img src="assets/icon.png" alt="" width="40" height="40">
+      <div class="brand-text"><b>Odium</b><span>Avatar &amp; world uploader</span></div>
+    </div>
+
+    <nav class="nav" aria-label="Main">
+      <button class="nav-item is-on" id="navUpload" type="button"><svg class="ico"><use href="#i-upload"/></svg>Upload</button>
+      <button class="nav-item" id="navAvatars" type="button"><svg class="ico"><use href="#i-grid"/></svg>Avatars<span class="count" id="count">0</span></button>
+      <button class="nav-item" id="navWorlds" type="button"><svg class="ico"><use href="#i-globe"/></svg>Worlds<span class="count" id="countWorlds">0</span></button>
+    </nav>
+
+    <div class="side-group">
+      <p class="side-title">Create</p>
+      <button id="newBtn" class="nav-item" type="button"><svg class="ico"><use href="#i-plus"/></svg>Reserve an ID</button>
+      <button id="bundleBtn" class="nav-item" type="button"><svg class="ico"><use href="#i-box"/></svg>Start from a bundle</button>
+    </div>
+
+    <div class="account">
+      <span class="avatar-dot" id="whoInitial" aria-hidden="true">?</span>
+      <div class="account-text">
+        <span id="who">Signed out</span>
+        <small id="whoState">VRChat account</small>
+      </div>
+      <button id="logout" class="icon-btn" type="button" title="Sign out" aria-label="Sign out" hidden><svg class="ico"><use href="#i-logout"/></svg></button>
+    </div>
+  </aside>
+
+  <!-- ───────── Main ───────── -->
+  <main class="main">
+    <!-- Avatar browser -->
+    <section id="viewList" class="view" hidden>
+      <header class="page-head">
+        <div>
+          <h1 id="listTitle">Your avatars</h1>
+          <p class="sub" id="listSub">Choose one to upload a new build to it.</p>
+        </div>
+        <div class="head-tools">
+          <label class="search"><svg class="ico"><use href="#i-search"/></svg><input id="search" type="search" placeholder="Search by name or ID" aria-label="Search"></label>
+          <button id="refresh" class="btn" type="button"><svg class="ico"><use href="#i-refresh"/></svg>Refresh</button>
+        </div>
+      </header>
+      <p id="notice" class="banner err" role="status" hidden></p>
+      <div id="rows" class="avatar-grid"></div>
+    </section>
+
+    <!-- Upload workspace -->
+    <section id="viewUpload" class="view">
+      <header class="page-head">
+        <div>
+          <h1 id="upTitle">Upload</h1>
+          <p class="sub" id="upSub">Pick an avatar or world to start.</p>
+        </div>
+        <div class="head-meta" id="upMeta" hidden>
+          <span id="upChip" class="chip chip-pink" hidden>First upload</span>
+          <button id="copyId" class="id-pill" type="button" title="Copy ID"><code id="upId"></code><svg class="ico"><use href="#i-copy"/></svg></button>
+        </div>
+      </header>
+
+      <!-- Shown until an avatar is chosen -->
+      <div class="empty-state" id="upEmpty">
+        <img src="assets/icon.png" alt="" width="84" height="84">
+        <h2>What are you uploading?</h2>
+        <p>Open an avatar or world you already have, reserve a new avatar ID, or start from a .vrca or .vrcw build.</p>
+        <div class="empty-actions">
+          <button id="emptyBrowse" class="btn btn-primary" type="button"><svg class="ico"><use href="#i-grid"/></svg>Choose an avatar</button>
+          <button id="emptyWorlds" class="btn" type="button"><svg class="ico"><use href="#i-globe"/></svg>Choose a world</button>
+          <button id="emptyNew" class="btn" type="button"><svg class="ico"><use href="#i-plus"/></svg>Reserve an ID</button>
+          <button id="emptyBundle" class="btn" type="button"><svg class="ico"><use href="#i-box"/></svg>Start from a bundle</button>
+        </div>
+      </div>
+
+      <form class="scroll" id="upForm" autocomplete="off" hidden>
+        <ol class="steps">
+          <li class="step" id="stepBundle">
+            <span class="step-mark" aria-hidden="true"><b>1</b><svg class="ico"><use href="#i-check"/></svg></span>
+            <div class="step-body">
+              <h3><span id="bundleLabel">Avatar build</span> <small id="bundleKind">.vrca, required</small></h3>
+              <div class="file-row">
+                <span class="file-ico"><svg class="ico"><use href="#i-box"/></svg></span>
+                <div class="file-text"><output id="bundleName">No file chosen</output><small id="bundleMeta">Build it with the VRChat SDK in Unity</small></div>
+                <button id="pickBundle" class="btn btn-sm" type="button">Browse</button>
+              </div>
+              <p id="bundleWarn" class="callout warn" hidden></p>
+              <p id="bundleCheck" class="callout" hidden></p>
+            </div>
+          </li>
+
+          <li class="step" id="stepThumb">
+            <span class="step-mark" aria-hidden="true"><b>2</b><svg class="ico"><use href="#i-check"/></svg></span>
+            <div class="step-body">
+              <h3>Thumbnail <small id="thumbReq">optional for updates</small></h3>
+              <div class="file-row">
+                <span class="file-ico" id="thumbIco"><svg class="ico"><use href="#i-image"/></svg><img id="thumbMini" alt="" hidden></span>
+                <div class="file-text"><output id="thumbName">No file chosen</output><small>PNG or JPG. Cropped to 4:3 and scaled to 800 × 600.</small></div>
+                <button id="pickThumb" class="btn btn-sm" type="button">Browse</button>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" id="stepDetails">
+            <span class="step-mark" aria-hidden="true"><b>3</b><svg class="ico"><use href="#i-check"/></svg></span>
+            <div class="step-body">
+              <h3>Details</h3>
+              <div class="two">
+                <label class="field"><span class="lab">Name</span><input id="name" type="text" maxlength="64" placeholder="Name"></label>
+                <label class="field"><span class="lab">Tags <i>optional</i></span><input id="tags" type="text" placeholder="cute, quest, sfw"></label>
+              </div>
+              <label class="field"><span class="lab">Description <i>optional</i></span><textarea id="desc" rows="2" maxlength="256" placeholder="What is it?"></textarea></label>
+              <div class="two" id="worldFields" hidden>
+                <label class="field"><span class="lab">Maximum capacity</span><input id="capMax" type="number" min="1" step="1" value="32"></label>
+                <label class="field"><span class="lab">Recommended capacity</span><input id="capRec" type="number" min="1" step="1" value="16"></label>
+              </div>
+            </div>
+          </li>
+
+          <li class="step" id="stepRelease">
+            <span class="step-mark" aria-hidden="true"><b>4</b><svg class="ico"><use href="#i-check"/></svg></span>
+            <div class="step-body">
+              <h3>Release</h3>
+              <div class="three">
+                <div class="field" id="releaseField"><span class="lab">Visibility</span>
+                  <div class="seg" id="release"><button type="button" data-v="private" class="is-on">Private</button><button type="button" data-v="public">Public</button></div></div>
+                <div class="field"><span class="lab">Platform</span>
+                  <div class="seg" id="platform"><button type="button" data-v="standalonewindows" class="is-on">PC</button><button type="button" data-v="android">Android</button><button type="button" data-v="ios">iOS</button></div></div>
+                <label class="field"><span class="lab">Unity version</span><input id="unity" type="text" value="2022.3.22f1" spellcheck="false"></label>
+              </div>
+              <p class="hint-inline" id="worldReleaseNote" hidden>New worlds upload as private, the same as with the SDK. To make one public, publish it to Community Labs from the VRChat website.</p>
+              <button id="rights" class="consent" type="button" role="switch" aria-checked="false">
+                <span class="switch"><i></i></span>
+                <span class="consent-text"><b id="rightsLabel">I made this avatar or have the rights to upload it</b>
+                  <small>By clicking OK, I certify that I have the necessary rights to upload this content and that it will not infringe on any third-party legal or intellectual property rights.</small></span>
+              </button>
+            </div>
+          </li>
+        </ol>
+      </form>
+
+      <footer class="actionbar" id="actionbar" hidden>
+        <p id="ready" class="ready"><i class="dot"></i><span id="readyText">Sign in to begin</span></p>
+        <button id="cancel" class="btn" type="button" hidden>Cancel</button>
+        <button id="upload" class="btn btn-primary btn-go" type="button" disabled>
+          <i id="fill" class="fill"></i>
+          <span class="go-label"><svg class="ico"><use href="#i-upload"/></svg><span id="goLabel">Upload</span></span>
+        </button>
+      </footer>
+    </section>
+  </main>
+
+  <!-- ───────── Preview + activity rail ───────── -->
+  <aside class="panel" id="panel">
+    <section class="card preview">
+      <header class="card-head">
+        <h2>Preview</h2>
+        <div class="seg seg-sm" id="previewTabs">
+          <button type="button" class="is-on" data-pane="3d">Model</button>
+          <button type="button" data-pane="thumb">Thumbnail</button>
+        </div>
+      </header>
+      <div class="stage" id="stage">
+        <canvas id="view3d"></canvas>
+        <p class="stage-ph" id="stagePh">Choose a build to preview the model</p>
+        <span class="stage-info" id="meshInfo" hidden></span>
+        <div class="stage-tools" id="vbtns">
+          <button type="button" class="icon-btn" id="vRotate" title="Auto-rotate" aria-label="Auto-rotate"><svg class="ico"><use href="#i-rotate"/></svg></button>
+          <button type="button" class="icon-btn" id="vZoomOut" title="Zoom out" aria-label="Zoom out"><svg class="ico"><use href="#i-zoom-out"/></svg></button>
+          <button type="button" class="icon-btn" id="vZoomIn" title="Zoom in" aria-label="Zoom in"><svg class="ico"><use href="#i-zoom-in"/></svg></button>
+          <button type="button" class="icon-btn" id="vReset" title="Reset view" aria-label="Reset view"><svg class="ico"><use href="#i-reset"/></svg></button>
+        </div>
+      </div>
+      <div class="thumb-view" id="thumbBox" hidden><img id="thumbImg" alt="" hidden><span id="thumbEmpty">Your thumbnail appears here</span></div>
+      <p class="hint" id="previewHint">Drag to orbit, scroll to zoom. Shaders and animations may look different in VRChat.</p>
+    </section>
+
+    <section class="card log-card">
+      <header class="card-head">
+        <h2>Activity</h2>
+        <div class="log-tools">
+          <label class="check-inline" title="Show API and storage request details"><input type="checkbox" id="logVerbose" checked>Verbose</label>
+          <button id="logCopy" class="link" type="button">Copy</button>
+          <button id="logClear" class="link" type="button">Clear</button>
+        </div>
+      </header>
+      <div id="log" class="logbox" role="log" aria-live="polite"></div>
+    </section>
+  </aside>
+
+  <!-- ───────── Dialogs ───────── -->
+  <div id="newModal" class="overlay" hidden>
+    <div class="dialog" role="dialog" aria-labelledby="newTitle">
+      <button id="newClose" class="icon-btn dialog-x" type="button" aria-label="Close"><svg class="ico"><use href="#i-close"/></svg></button>
+      <form id="newForm">
+        <h2 id="newTitle">Reserve an avatar ID</h2>
+        <p class="dialog-sub">Creates an empty avatar on your account so you can build against its ID.</p>
+        <label class="field"><span class="lab">Name</span><input id="nName" type="text" maxlength="64" placeholder="My avatar" required></label>
+        <label class="field"><span class="lab">Description <i>optional</i></span><input id="nDesc" type="text" maxlength="256"></label>
+        <div class="two">
+          <div class="field"><span class="lab">Platform</span>
+            <div class="seg" id="nPlatform"><button type="button" data-v="standalonewindows" class="is-on">PC</button><button type="button" data-v="android">Android</button><button type="button" data-v="ios">iOS</button></div></div>
+          <div class="field"><span class="lab">Visibility</span>
+            <div class="seg" id="nRelease"><button type="button" data-v="private" class="is-on">Private</button><button type="button" data-v="public">Public</button></div></div>
+        </div>
+        <div class="two">
+          <label class="field"><span class="lab">Unity version</span><input id="nUnity" type="text" value="2022.3.22f1" spellcheck="false"></label>
+          <label class="field"><span class="lab">Tags <i>optional</i></span><input id="nTags" type="text" placeholder="comma, separated"></label>
+        </div>
+        <p class="err" id="newErr" role="alert"></p>
+        <div class="actions"><button id="newCancel" class="btn" type="button">Cancel</button><button class="btn btn-primary" type="submit" id="newGo">Reserve ID</button></div>
+      </form>
+      <div id="newDone" hidden>
+        <h2>ID reserved</h2>
+        <p class="dialog-sub">It is copied to your clipboard.</p>
+        <div class="id-box"><code id="doneId"></code><button id="doneCopy" class="btn btn-sm" type="button">Copy</button></div>
+        <ol class="howto">
+          <li>In Unity, select your avatar and open its <b>PipelineManager</b>.</li>
+          <li>Paste the ID into <b>Blueprint ID</b> and build with the VRChat SDK. You can also skip this: Odium rewrites the ID on upload.</li>
+          <li>Come back and upload the <b>.vrca</b> with a thumbnail.</li>
+        </ol>
+        <div class="actions"><button id="doneLater" class="btn" type="button">Not now</button><button id="doneGo" class="btn btn-primary" type="button">Continue to upload</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="bundleModal" class="overlay" hidden>
+    <div class="dialog" role="dialog" aria-labelledby="bTitle">
+      <button id="bClose" class="icon-btn dialog-x" type="button" aria-label="Close"><svg class="ico"><use href="#i-close"/></svg></button>
+      <form id="bForm">
+        <h2 id="bTitle">Start from a bundle</h2>
+        <p class="dialog-sub">Pick an avatar (.vrca) or world (.vrcw) build. Odium reads the ID baked into the file and uses your existing record, or sets up a new one.</p>
+        <div class="field"><span class="lab">Bundle</span>
+          <div class="file-row">
+            <span class="file-ico"><svg class="ico"><use href="#i-box"/></svg></span>
+            <div class="file-text"><output id="bName">No file chosen</output></div>
+            <button id="bPick" class="btn btn-sm" type="button">Browse</button>
+          </div>
+        </div>
+        <label class="field"><span class="lab" id="bIdLab">ID</span><input id="bId" type="text" spellcheck="false" placeholder="avtr_… or wrld_…"><small id="bIdNote" class="hint-inline"></small></label>
+        <label class="field"><span class="lab">Name</span><input id="bAvName" type="text" maxlength="64" placeholder="Name"></label>
+        <p class="err" id="bErr" role="alert"></p>
+        <div class="actions"><button id="bCancel" class="btn" type="button">Cancel</button><button class="btn btn-primary" type="submit" id="bGo" disabled>Continue</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="login" class="overlay overlay-solid">
+    <form id="loginForm" class="dialog dialog-narrow">
+      <img class="login-mark" src="assets/icon.png" alt="" width="72" height="72">
+      <h2>Sign in to VRChat</h2>
+      <p class="dialog-sub">Your password goes straight to VRChat. Only an encrypted session is kept on this computer.</p>
+      <label class="field"><span class="lab">Username or email</span><input id="user" type="text" autocomplete="username" required></label>
+      <label class="field"><span class="lab">Password</span><input id="pass" type="password" autocomplete="current-password" required></label>
+      <p class="err" id="loginErr" role="alert"></p>
+      <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+    <form id="tfaForm" class="dialog dialog-narrow" hidden>
+      <img class="login-mark" src="assets/icon.png" alt="" width="72" height="72">
+      <h2>Two-factor code</h2>
+      <p class="dialog-sub">Enter the code from your authenticator app or email.</p>
+      <div class="seg" id="tfaMethod">
+        <button type="button" data-v="totp" class="is-on">App</button>
+        <button type="button" data-v="emailotp">Email</button>
+        <button type="button" data-v="otp">Recovery</button>
+      </div>
+      <label class="field"><span class="lab">Code</span><input id="tfaCode" type="text" inputmode="numeric" autocomplete="one-time-code" required></label>
+      <p class="err" id="tfaErr" role="alert"></p>
+      <button class="btn btn-primary btn-block" type="submit">Verify</button>
+    </form>
+  </div>
+
+  <script src="js/titlebar.js"></script>
+  <script src="js/viewer.js"></script>
+  <script src="js/util.js"></script>
+  <script src="js/log.js"></script>
+  <script src="js/avatars.js"></script>
+  <script src="js/preview.js"></script>
+  <script src="js/workspace.js"></script>
+  <script src="js/dialogs.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

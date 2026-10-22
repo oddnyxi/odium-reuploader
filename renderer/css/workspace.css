@@ -1,0 +1,44 @@
+/* Upload workspace: a four-step form with a sticky action bar. */
+
+.scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 32px 24px; }
+
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; max-width: 720px; }
+.step { position: relative; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 16px; padding-bottom: 22px; }
+.step:last-child { padding-bottom: 0; }
+/* the rail joining the step markers */
+.step::before { content: ""; position: absolute; left: 15px; top: 34px; bottom: 2px; width: 2px; background: var(--line-soft); }
+.step:last-child::before { display: none; }
+.step.is-done::before { background: rgba(238, 51, 85, .45); }
+
+.step-mark { position: relative; z-index: 1; width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--ink-1); color: var(--muted); }
+.step-mark b { grid-area: 1 / 1; font: 600 13px var(--font-display); }
+.step-mark .ico { grid-area: 1 / 1; width: 16px; height: 16px; stroke-width: 2.4; opacity: 0; transform: scale(.6); transition: opacity .15s, transform .2s; }
+.step.is-done .step-mark { background: var(--paw); border-color: var(--paw); color: #fff; }
+.step.is-done .step-mark b { opacity: 0; }
+.step.is-done .step-mark .ico { opacity: 1; transform: none; }
+
+.step-body { display: flex; flex-direction: column; gap: 12px; min-width: 0; padding-top: 4px; }
+.step-body h3 { font: 600 15px/1.3 var(--font); }
+.step-body h3 small { margin-left: 8px; font-size: 12.5px; font-weight: 400; color: var(--faint); }
+.step-body .callout { margin-top: -2px; }
+
+/* ── Empty state ── */
+.empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 0 32px 64px; text-align: center; }
+.empty-state img { margin-bottom: 8px; border-radius: 22px; background: #fff; padding: 4px; }
+.empty-state h2 { font-size: 22px; font-weight: 700; }
+.empty-state p { max-width: 420px; color: var(--muted); }
+.empty-actions { display: flex; gap: 10px; margin-top: 12px; }
+
+/* ── Action bar ── */
+.actionbar { display: flex; align-items: center; gap: 12px; padding: 14px 32px; border-top: 1px solid var(--line-soft); background: var(--ink-1); }
+.ready { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; color: var(--muted); font-size: 13px; }
+.ready .dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--faint); }
+.ready.is-ok { color: var(--ok); }
+.ready.is-ok .dot { background: var(--ok); box-shadow: 0 0 0 4px rgba(86, 214, 164, .16); }
+#readyText { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.btn-go { min-width: 188px; height: 42px; overflow: hidden; }
+.btn-go .fill { position: absolute; inset: 0 auto 0 0; width: 0; background: rgba(255, 255, 255, .22); transition: width .25s ease; }
+.go-label { position: relative; display: inline-flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+
+.btn-go.is-busy:disabled { opacity: 1; }

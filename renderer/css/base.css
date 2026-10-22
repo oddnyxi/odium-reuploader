@@ -1,0 +1,40 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+
+body {
+  display: grid;
+  grid-template-columns: var(--sidebar) minmax(0, 1fr) var(--rail);
+  grid-template-rows: var(--titlebar) minmax(0, 1fr);
+  grid-template-areas: "title title title" "side main panel";
+  background: var(--ink-0);
+  color: var(--text);
+  font: 400 14px/1.5 var(--font);
+  font-feature-settings: "calt", "kern";
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+body.browsing { grid-template-columns: var(--sidebar) minmax(0, 1fr); grid-template-areas: "title title" "side main"; }
+body.browsing .panel { display: none; }
+
+h1, h2, h3, p { margin: 0; }
+h1, h2 { font-family: var(--font-display); letter-spacing: -.02em; }
+code, output { font-family: inherit; }
+[hidden] { display: none !important; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+:focus-visible { outline: none; box-shadow: var(--ring); }
+
+.ico { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--ink-4); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: #473c5d; background-clip: padding-box; border: 2px solid transparent; }
+::-webkit-scrollbar-track { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
